@@ -1,10 +1,20 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html lang="en">
 <head>
-    <title>Index Page</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel='stylesheet' href='/webjars/bootstrap/css/bootstrap.min.css'>
+    <title>Bootstrap Example</title>
 </head>
 <body>
-<h1>Welcome to Index PAGE!</h1>
-<p>Please <a th:href="@{/login}">login</a>.</p>
+<h1>Добро пожаловать в Bootstrap CRUD-приложение!</h1>
+<p/>
+<form th:action="@{/login}" method="get">
+    <input type="submit" value="Вoйти"/>
+</form>
+
 </body>
 </html>

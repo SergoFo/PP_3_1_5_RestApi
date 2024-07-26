@@ -22,9 +22,7 @@ public class MainController {
     @GetMapping("/user")
     public String userPage(Principal principal, Model model) {
         User user = (User) userDetailsService.loadUserByUsername(principal.getName());
-        model.addAttribute("username", user.getUsername());
-        model.addAttribute("email", user.getEmail());
-        model.addAttribute("roles", user.getAuthorities());
+        model.addAttribute("id", user.getId());
         return "user";
     }
 

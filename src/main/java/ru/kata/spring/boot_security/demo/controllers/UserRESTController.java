@@ -40,8 +40,7 @@ public class UserRESTController {
     @PostMapping("/user")
     public ResponseEntity<HttpStatus> create(@RequestBody @Valid User user,
                                              BindingResult bindingResult) {
-        return ResponseEntity.ok(HttpStatus.OK);
-/*        if (bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             StringBuilder errorMsg = new StringBuilder();
 
             List<FieldError> errors = bindingResult.getFieldErrors();
@@ -52,12 +51,38 @@ public class UserRESTController {
             }
 
             throw new UserNotCreatedException(errorMsg.toString());
-        }*/
+        }
 
-/*        userDetailsService.save(user);
+        userDetailsService.save(user);
 
         // отправляем HTTP ответ с пустым телом и со статусом 200
-        return ResponseEntity.ok(HttpStatus.OK);*/
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @PutMapping("/user")
+    public ResponseEntity<HttpStatus> update(@RequestBody @Valid User user,
+                                             BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            StringBuilder errorMsg = new StringBuilder();
+
+            List<FieldError> errors = bindingResult.getFieldErrors();
+            for (FieldError error : errors) {
+                errorMsg.append(error.getField())
+                        .append(" - ").append(error.getDefaultMessage())
+                        .append(";");
+            }
+
+            throw new UserNotCreatedException(errorMsg.toString());
+        }
+
+        userDetailsService.update(user);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/user/{id}")
+    public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") long id) {   //@PathVariable - дает получить id который пришел из адреса запроса
+        userDetailsService.delete(id);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @ExceptionHandler

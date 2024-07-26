@@ -1,16 +1,87 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html lang="en">
 <head>
-    <title>User Page</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Страница пользователя</title>
 </head>
 <body>
-<h1>Welcome, <span th:text="${username}"></span></h1>
-<p>Email: <span th:text="${email}"></span></p>
-<p>Roles:
-    <span th:each="role : ${roles}" th:text="${role}"></span>
-</p>
-<form th:action="@{/logout}" method="post">
-    <button type="submit">Logout</button>
-</form>
+
+<div class="container-fluid">
+    <div class="row bg-dark text-white">
+        <div class="col-lg mt-2 mb-2">
+            <div class="row mx-0">
+                <div class="col-md-auto font-weight-bold px-1" id="auth-user-name"></div>
+                <div class="col-md-auto px-1" id="auth-user-role"></div>
+            </div>
+        </div>
+        <div class="col-lg mt-2 mb-2">
+            <div class="col-md-auto text-right">
+                <a th:href="@{/logout}" class="text-muted text-decoration-none">Выйти</a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-11 bg-light vh-100 px-5">
+            <h1 class="text-start mt-4">Информационная страница пользователя</h1>
+            <div class="tab-content" id="v-pills-tabContent">
+                <div class="card">
+                    <h5 class="card-header">О пользователе</h5>
+                    <div class="card-body">
+                        <table class="table table-borderless table-striped px-4 mb-0">
+                            <thead>
+                            <tr class="border-top">
+                                <th scope="col">ID</th>
+                                <th scope="col">Логин</th>
+                                <th scope="col">Емейл</th>
+                                <th scope="col">Роли</th>
+                            </tr>
+                            </thead>
+                            <tbody id="auth-user-table">
+                                <tr class="border-top">
+                                    <th id="id" scope="col"></th>
+                                    <th id="name" scope="col"></th>
+                                    <th id="email" scope="col"></th>
+                                    <th id="roles" scope="col"></th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+    var currentUserId = /*[[${id}]]*/ 'default';
+    console.log(currentUserId);
+
+    /*]]>*/
+
+    async function getCurrentUser(){
+        const userResponse = await fetch(`/api/user/${currentUserId}`, {
+            method: "GET"
+        })
+
+        const json = await userResponse.json();
+
+        console.log(json)
+
+        $('#id').html(json.id)
+        $('#name').html(json.username)
+        $('#email').html(json.email)
+        $('#roles').html(json.roles.map(role => role.name).join(', '))
+    }
+
+    getCurrentUser()
+</script>
 </body>
 </html>

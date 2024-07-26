@@ -26,7 +26,8 @@ public class User implements UserDetails {
     private String username;
 
     @Column(name = "password")
-    @Min(value = 8, message = "Password should be greater than 8")
+    @NotEmpty(message = "Password should not be empty")
+    @Size(min = 2, max = 100, message = "Password should be between 2 and 30 characters")
     private String password;
 
     @Getter
